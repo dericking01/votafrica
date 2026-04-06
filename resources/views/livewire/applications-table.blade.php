@@ -22,6 +22,14 @@
                     Clear
                 </button>
             @endif
+            <button type="button"
+                    wire:click="toggleFilters"
+                    class="inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition-colors {{ $showFilters || $this->hasActiveFilters() ? 'border-slate-900 bg-slate-900 text-white hover:bg-slate-700' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50' }}">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 4.995 2.14 4.995 4.777v.216A4.91 4.91 0 0 1 15.5 11.4l-2.134 1.423a1.5 1.5 0 0 0-.666 1.247v2.68m0 0h-1.4m1.4 0h1.4" />
+                </svg>
+                Filter
+            </button>
         </form>
     </div>
 
@@ -38,6 +46,58 @@
         </button>
     </div>
 
+    @if($showFilters)
+        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+                <div>
+                    <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Status</label>
+                    <select wire:model.live="statusFilter" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300">
+                        <option value="all">Follow tab</option>
+                        <option value="active">Active only</option>
+                        <option value="archived">Archived only</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Category</label>
+                    <select wire:model.live="categoryFilter" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300">
+                        <option value="all">All categories</option>
+                        <option value="Government">Government</option>
+                        <option value="Private">Private</option>
+                        <option value="Public">Public</option>
+                        <option value="Small Entrepreneurs">Small Entrepreneurs</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Capital</label>
+                    <select wire:model.live="capitalFilter" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300">
+                        <option value="all">All ranges</option>
+                        <option value="10M-100M">10M - 100M</option>
+                        <option value="100M-1B">100M - 1B</option>
+                        <option value="1B and above">1B and above</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Date From</label>
+                    <input type="date" wire:model.live="dateFrom" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300" />
+                </div>
+
+                <div>
+                    <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Date To</label>
+                    <input type="date" wire:model.live="dateTo" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300" />
+                </div>
+            </div>
+
+            <div class="mt-4 flex items-center justify-end gap-2">
+                <button type="button" wire:click="clearFilters" class="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100">
+                    Reset filters
+                </button>
+            </div>
+        </div>
+    @endif
+
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <table class="min-w-full">
             <thead>
@@ -50,7 +110,7 @@
                     <th class="px-5 py-4 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest">Category</th>
                     <th class="px-5 py-4 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest">Status</th>
                     <th class="px-5 py-4 text-center text-[11px] font-bold text-slate-400 uppercase tracking-widest hidden sm:table-cell">Date</th>
-                    @if($tab === 'archived')
+                    @if($this->isArchivedView())
                         <th class="px-5 py-4 text-center text-[11px] font-bold text-slate-400 uppercase tracking-widest">Action</th>
                     @endif
                     <th class="px-5 py-4 text-center text-[11px] font-bold text-slate-400 uppercase tracking-widest">Details</th>
@@ -71,8 +131,9 @@
                         <td class="px-5 py-4">
                             @php
                                 $cc = ['Government' => 'background:#dbeafe;color:#1d4ed8', 'Private' => 'background:#ede9fe;color:#6d28d9', 'Public' => 'background:#dcfce7;color:#15803d', 'Small Entrepreneurs' => 'background:#fef9c3;color:#854d0e'];
+                                $categoryLabel = $app->category === 'Small Entrepreneurs' ? 'SME' : $app->category;
                             @endphp
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="{{ $cc[$app->category] ?? 'background:#f1f5f9;color:#475569' }}">{{ $app->category }}</span>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="{{ $cc[$app->category] ?? 'background:#f1f5f9;color:#475569' }}">{{ $categoryLabel }}</span>
                         </td>
                         <td class="px-5 py-4">
                             <span class="inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-semibold {{ $app->trashed() ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800' }}">
@@ -80,7 +141,7 @@
                             </span>
                         </td>
                         <td class="px-5 py-4 text-right text-xs text-slate-400 hidden sm:table-cell">{{ $app->created_at->format('M d, Y') }}</td>
-                        @if($tab === 'archived')
+                        @if($this->isArchivedView())
                             <td class="px-5 py-4 text-center">
                                 <button type="button"
                                         wire:click="restoreApplication({{ $app->id }})"
@@ -102,7 +163,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="{{ $tab === 'archived' ? 10 : 9 }}" class="px-5 py-16 text-center">
+                        <td colspan="{{ $this->isArchivedView() ? 10 : 9 }}" class="px-5 py-16 text-center">
                             <p class="text-slate-400 text-sm">No applications found{{ $search ? ' matching &ldquo;'.$search.'&rdquo;' : '' }}.</p>
                         </td>
                     </tr>
