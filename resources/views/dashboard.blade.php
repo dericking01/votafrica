@@ -148,13 +148,28 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        function initDashboardCharts() {
+            const capitalCanvas = document.getElementById('capitalChart');
+            const categoryCanvas = document.getElementById('categoryChart');
+
+            if (!capitalCanvas || !categoryCanvas || typeof Chart === 'undefined') {
+                return;
+            }
+
             const capitalData = @json($capitalCounts);
             const categoryData = @json($categoryCounts);
 
+            if (window.votafricaCapitalChart) {
+                window.votafricaCapitalChart.destroy();
+            }
+
+            if (window.votafricaCategoryChart) {
+                window.votafricaCategoryChart.destroy();
+            }
+
             // Capital Chart
-            const capitalCtx = document.getElementById('capitalChart').getContext('2d');
-            new Chart(capitalCtx, {
+            const capitalCtx = capitalCanvas.getContext('2d');
+            window.votafricaCapitalChart = new Chart(capitalCtx, {
                 type: 'bar',
                 data: {
                     labels: Object.keys(capitalData),
@@ -202,7 +217,7 @@
 
             // Category Chart
             const categoryColors = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b'];
-            new Chart(document.getElementById('categoryChart'), {
+            window.votafricaCategoryChart = new Chart(categoryCanvas, {
                 type: 'bar',
                 data: {
                     labels: Object.keys(categoryData),
@@ -249,6 +264,9 @@
                     }
                 }
             });
-        });
+        }
+
+        document.addEventListener('DOMContentLoaded', initDashboardCharts);
+        document.addEventListener('livewire:navigated', initDashboardCharts);
     </script>
 </x-layouts.app>

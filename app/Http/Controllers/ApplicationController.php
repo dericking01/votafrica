@@ -47,22 +47,7 @@ class ApplicationController extends Controller
 
     public function index(Request $request)
     {
-        $search = $request->query('search', '');
-
-        $applications = Application::when($search, function ($query, $search) {
-            return $query->where(function ($query) use ($search) {
-                $query->where('organization_name', 'like', "%{$search}%")
-                    ->orWhere('business_location', 'like', "%{$search}%")
-                    ->orWhere('business_activity', 'like', "%{$search}%")
-                    ->orWhere('phone_number', 'like', "%{$search}%")
-                    ->orWhere('category', 'like', "%{$search}%");
-            });
-        })
-        ->orderByDesc('created_at')
-        ->paginate(10)
-        ->withQueryString();
-
-        return view('applications.index', compact('applications', 'search'));
+        return view('applications.index');
     }
 
     public function show(Application $application)

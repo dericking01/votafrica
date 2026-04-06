@@ -6,6 +6,7 @@
     <title>VotAfrica Admin</title>
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
+    @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-slate-50 antialiased" style="font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;">
@@ -19,7 +20,7 @@
             </div>
 
             <nav class="flex-1 px-3 py-5" style="display:flex;flex-direction:column;gap:2px;">
-                <a href="{{ route('dashboard') }}"
+                <a href="{{ route('dashboard') }}" wire:navigate
                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all
                           {{ request()->routeIs('dashboard') ? 'text-white' : 'text-slate-400 hover:text-white' }}"
                    style="{{ request()->routeIs('dashboard') ? 'background:#ef4444;box-shadow:0 4px 14px rgba(239,68,68,0.35);' : '' }}">
@@ -29,7 +30,7 @@
                     Dashboard
                 </a>
 
-                <a href="{{ route('applications.index') }}"
+                  <a href="{{ route('applications.index') }}" wire:navigate
                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all
                           {{ request()->routeIs('applications.*') ? 'text-white' : 'text-slate-400 hover:text-white' }}"
                    style="{{ request()->routeIs('applications.*') ? 'background:#ef4444;box-shadow:0 4px 14px rgba(239,68,68,0.35);' : '' }}">
@@ -68,5 +69,6 @@
         </main>
 
     </div>
+    @livewireScripts
 </body>
 </html>
