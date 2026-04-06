@@ -24,6 +24,28 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-3">
+                @if($isEditing)
+                    <button type="button"
+                            wire:click="saveEdit"
+                            wire:loading.attr="disabled"
+                            wire:target="saveEdit"
+                            class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60">
+                        <span wire:loading.remove wire:target="saveEdit">Save changes</span>
+                        <span wire:loading wire:target="saveEdit">Saving...</span>
+                    </button>
+                    <button type="button"
+                            wire:click="cancelEdit"
+                            class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100">
+                        Cancel
+                    </button>
+                @else
+                    <button type="button"
+                            wire:click="edit"
+                            class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100">
+                        Edit fields
+                    </button>
+                @endif
+
                 @if($application->trashed())
                     <button type="button"
                             wire:click="restore"
@@ -83,19 +105,50 @@
             <div class="grid sm:grid-cols-2">
                 <div class="border-b border-slate-100 px-6 py-5">
                     <p class="mb-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-400">Business Location</p>
-                    <p class="text-sm font-semibold text-slate-900">{{ $application->business_location }}</p>
+                    @if($isEditing)
+                        <input type="text" wire:model.blur="business_location" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300" />
+                        @error('business_location') <p class="mt-1 text-xs font-medium text-rose-600">{{ $message }}</p> @enderror
+                    @else
+                        <p class="text-sm font-semibold text-slate-900">{{ $application->business_location }}</p>
+                    @endif
                 </div>
                 <div class="border-b border-slate-100 px-6 py-5 sm:border-l">
                     <p class="mb-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-400">Phone Number</p>
-                    <p class="text-sm font-semibold text-slate-900">{{ $application->phone_number }}</p>
+                    @if($isEditing)
+                        <input type="text" wire:model.blur="phone_number" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300" />
+                        @error('phone_number') <p class="mt-1 text-xs font-medium text-rose-600">{{ $message }}</p> @enderror
+                    @else
+                        <p class="text-sm font-semibold text-slate-900">{{ $application->phone_number }}</p>
+                    @endif
                 </div>
                 <div class="border-b border-slate-100 px-6 py-5">
                     <p class="mb-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-400">Capital Range</p>
-                    <p class="text-sm font-semibold text-slate-900">{{ $application->capital_range }}</p>
+                    @if($isEditing)
+                        <select wire:model.blur="capital_range" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300">
+                            <option value="">Choose range</option>
+                            <option value="10M-100M">10M - 100M</option>
+                            <option value="100M-1B">100M - 1B</option>
+                            <option value="1B and above">1B and above</option>
+                        </select>
+                        @error('capital_range') <p class="mt-1 text-xs font-medium text-rose-600">{{ $message }}</p> @enderror
+                    @else
+                        <p class="text-sm font-semibold text-slate-900">{{ $application->capital_range }}</p>
+                    @endif
                 </div>
                 <div class="border-b border-slate-100 px-6 py-5 sm:border-l">
                     <p class="mb-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-400">Category</p>
-                    <p class="text-sm font-semibold text-slate-900">{{ $application->category }}</p>
+                    @if($isEditing)
+                        <select wire:model.blur="category" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300">
+                            <option value="">Choose category</option>
+                            <option value="Government">Government</option>
+                            <option value="Private">Private</option>
+                            <option value="Public">Public</option>
+                            <option value="Small Entrepreneurs">Small Entrepreneurs</option>
+                        </select>
+                        @error('category') <p class="mt-1 text-xs font-medium text-rose-600">{{ $message }}</p> @enderror
+                    @else
+                        <p class="text-sm font-semibold text-slate-900">{{ $application->category }}</p>
+                    @endif
                 </div>
                 <div class="px-6 py-5 sm:col-span-2">
                     <p class="mb-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-400">Business Activity</p>

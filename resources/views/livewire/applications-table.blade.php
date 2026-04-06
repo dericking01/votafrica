@@ -25,6 +25,19 @@
         </form>
     </div>
 
+    <div class="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-1.5 w-fit">
+        <button type="button"
+                wire:click="setTab('active')"
+                class="rounded-xl px-4 py-2 text-sm font-semibold transition-colors {{ $tab === 'active' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100' }}">
+            Active
+        </button>
+        <button type="button"
+                wire:click="setTab('archived')"
+                class="rounded-xl px-4 py-2 text-sm font-semibold transition-colors {{ $tab === 'archived' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100' }}">
+            Archived
+        </button>
+    </div>
+
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <table class="min-w-full">
             <thead>
@@ -35,7 +48,9 @@
                     <th class="px-5 py-4 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest hidden lg:table-cell">Phone</th>
                     <th class="px-5 py-4 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest hidden lg:table-cell">Capital</th>
                     <th class="px-5 py-4 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest">Category</th>
+                    <th class="px-5 py-4 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest">Status</th>
                     <th class="px-5 py-4 text-right text-[11px] font-bold text-slate-400 uppercase tracking-widest hidden sm:table-cell">Date</th>
+                    <th class="px-5 py-4 text-center text-[11px] font-bold text-slate-400 uppercase tracking-widest">Action</th>
                     <th class="px-5 py-4 text-center text-[11px] font-bold text-slate-400 uppercase tracking-widest">Details</th>
                 </tr>
             </thead>
@@ -57,7 +72,23 @@
                             @endphp
                             <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="{{ $cc[$app->category] ?? 'background:#f1f5f9;color:#475569' }}">{{ $app->category }}</span>
                         </td>
+                        <td class="px-5 py-4">
+                            <span class="inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-semibold {{ $app->trashed() ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800' }}">
+                                {{ $app->trashed() ? 'Archived' : 'Active' }}
+                            </span>
+                        </td>
                         <td class="px-5 py-4 text-right text-xs text-slate-400 hidden sm:table-cell">{{ $app->created_at->format('M d, Y') }}</td>
+                        <td class="px-5 py-4 text-center">
+                            @if($app->trashed())
+                                <button type="button"
+                                        wire:click="restoreApplication({{ $app->id }})"
+                                        class="inline-flex items-center rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-200">
+                                    Restore
+                                </button>
+                            @else
+                                <span class="text-xs text-slate-300">-</span>
+                            @endif
+                        </td>
                         <td class="px-5 py-4 text-center">
                             <a href="{{ route('applications.show', $app) }}" wire:navigate
                                class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
@@ -71,7 +102,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="px-5 py-16 text-center">
+                        <td colspan="10" class="px-5 py-16 text-center">
                             <p class="text-slate-400 text-sm">No applications found{{ $search ? ' matching &ldquo;'.$search.'&rdquo;' : '' }}.</p>
                         </td>
                     </tr>

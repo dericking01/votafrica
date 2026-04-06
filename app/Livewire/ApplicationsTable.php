@@ -14,8 +14,26 @@ class ApplicationsTable extends Component
     #[Url(as: 'search', history: true)]
     public string $search = '';
 
+    #[Url(as: 'tab', history: true)]
+    public string $tab = 'active';
+
     public function updatedSearch(): void
     {
+        $this->resetPage();
+    }
+
+    public function updatedTab(): void
+    {
+        if (! in_array($this->tab, ['active', 'archived'], true)) {
+            $this->tab = 'active';
+        }
+
+        $this->resetPage();
+    }
+
+    public function setTab(string $tab): void
+    {
+        $this->tab = in_array($tab, ['active', 'archived'], true) ? $tab : 'active';
         $this->resetPage();
     }
 
@@ -25,9 +43,24 @@ class ApplicationsTable extends Component
         $this->resetPage();
     }
 
+    public function restoreApplication(int $applicationId): void
+    {
+        $application = Application::withTrashed()->find($applicationId);
+
+        if (! $application || ! $application->trashed()) {
+            return;
+        }
+
+        $application->restore();
+    }
+
     public function render()
     {
-        $applications = Application::query()
+        $baseQuery = $this->tab === 'archived'
+            ? Application::onlyTrashed()
+            : Application::query();
+
+        $applications = $baseQuery
             ->when($this->search, function ($query) {
                 $query->where(function ($query) {
                     $query->where('organization_name', 'like', "%{$this->search}%")
