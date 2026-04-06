@@ -1,4 +1,4 @@
-<div class="space-y-6">
+<div class="space-y-6 rounded-3xl border border-slate-200/80 bg-gradient-to-br from-white via-slate-50 to-stone-50 p-6 shadow-sm">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <p class="text-sm text-slate-500">Manage submissions</p>
@@ -13,10 +13,10 @@
                 <input
                     wire:model.live.debounce.300ms="search"
                     placeholder="Search applications..."
-                    class="pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 shadow-sm w-64 focus:outline-none focus:border-red-400"
+                    class="pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 shadow-sm w-64 focus:outline-none focus:border-slate-400"
                 />
             </div>
-            <button type="submit" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-colors" style="background:#ef4444;">Search</button>
+            <button type="submit" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-700">Search</button>
             @if($search !== '')
                 <button type="button" wire:click="clearSearch" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">
                     Clear
@@ -36,13 +36,14 @@
                     <th class="px-5 py-4 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest hidden lg:table-cell">Capital</th>
                     <th class="px-5 py-4 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest">Category</th>
                     <th class="px-5 py-4 text-right text-[11px] font-bold text-slate-400 uppercase tracking-widest hidden sm:table-cell">Date</th>
+                    <th class="px-5 py-4 text-center text-[11px] font-bold text-slate-400 uppercase tracking-widest">Details</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($applications as $app)
                     <tr class="hover:bg-slate-50 transition-colors" style="border-bottom:1px solid #f8fafc;">
                         <td class="px-5 py-4">
-                            <a href="{{ route('applications.show', $app) }}" wire:navigate class="font-semibold text-slate-900 hover:text-red-500 transition-colors text-sm">{{ $app->organization_name }}</a>
+                            <a href="{{ route('applications.show', $app) }}" wire:navigate class="text-sm font-semibold text-slate-900 transition-colors hover:text-slate-700">{{ $app->organization_name }}</a>
                         </td>
                         <td class="px-5 py-4 text-sm text-slate-600">{{ $app->business_location }}</td>
                         <td class="px-5 py-4 text-sm text-slate-500 hidden md:table-cell" style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ $app->business_activity }}</td>
@@ -57,10 +58,20 @@
                             <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="{{ $cc[$app->category] ?? 'background:#f1f5f9;color:#475569' }}">{{ $app->category }}</span>
                         </td>
                         <td class="px-5 py-4 text-right text-xs text-slate-400 hidden sm:table-cell">{{ $app->created_at->format('M d, Y') }}</td>
+                        <td class="px-5 py-4 text-center">
+                            <a href="{{ route('applications.show', $app) }}" wire:navigate
+                               class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
+                               title="View details">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.964-7.178Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                            </a>
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-5 py-16 text-center">
+                        <td colspan="8" class="px-5 py-16 text-center">
                             <p class="text-slate-400 text-sm">No applications found{{ $search ? ' matching &ldquo;'.$search.'&rdquo;' : '' }}.</p>
                         </td>
                     </tr>

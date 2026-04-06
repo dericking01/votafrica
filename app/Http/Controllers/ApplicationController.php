@@ -50,8 +50,10 @@ class ApplicationController extends Controller
         return view('applications.index');
     }
 
-    public function show(Application $application)
+    public function show(string $application)
     {
+        $application = Application::withTrashed()->findOrFail($application);
+
         return view('applications.show', compact('application'));
     }
 }

@@ -6,6 +6,7 @@
     <title>VotAfrica - Submit Your Business Application</title>
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    @livewireStyles
     <style>
         body { font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif; margin: 0; min-height: 100vh; background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%); color: #111827; }
         .container { max-width: 960px; margin: 0 auto; padding: 24px; }
@@ -45,83 +46,14 @@
             <h1 style="font-size: 2.5rem; margin: 16px 0 8px; font-weight: 700;">Business Application</h1>
             <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">Quick & easy registration. No signup required.</p>
             <div class="nav-links">
-                <a href="{{ route('login') }}">Admin Login</a>
+                <a href="{{ route('login') }}" wire:navigate>Admin Login</a>
             </div>
         </div>
 
         <div class="card">
-            @if(session('success'))
-                <div class="alert alert-success">✓ {{ session('success') }}</div>
-            @endif
-
-            @if($errors->any())
-                <div class="alert alert-error">
-                    <strong>Please fix the following issues:</strong>
-                    <ul style="margin: 8px 0 0 20px; padding: 0;">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <form method="POST" action="{{ route('applications.store') }}" novalidate>
-                @csrf
-                <div class="grid grid-cols-2" style="gap:24px;">
-                    <div>
-                        <label class="label" for="organization_name">Organization name</label>
-                        <input id="organization_name" name="organization_name" value="{{ old('organization_name') }}" class="input" type="text" placeholder="ACME Trading Ltd" required />
-                        @error('organization_name') <p style="color:#991b1b; font-size:0.85rem; margin: 4px 0 0 0;">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div>
-                        <label class="label" for="phone_number">Phone number</label>
-                        <input id="phone_number" name="phone_number" value="{{ old('phone_number') }}" class="input" type="text" placeholder="+254 700 000 000" required />
-                        @error('phone_number') <p style="color:#991b1b; font-size:0.85rem; margin: 4px 0 0 0;">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div>
-                        <label class="label" for="business_location">Business location</label>
-                        <input id="business_location" name="business_location" value="{{ old('business_location') }}" class="input" type="text" placeholder="Nairobi, Kenya" required />
-                        @error('business_location') <p style="color:#991b1b; font-size:0.85rem; margin: 4px 0 0 0;">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div>
-                        <label class="label" for="business_activity">Business activity</label>
-                        <input id="business_activity" name="business_activity" value="{{ old('business_activity') }}" class="input" type="text" placeholder="Retail, Import/Export" required />
-                        @error('business_activity') <p style="color:#991b1b; font-size:0.85rem; margin: 4px 0 0 0;">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div>
-                        <label class="label" for="capital_range">Capital range</label>
-                        <select id="capital_range" name="capital_range" class="select" required>
-                            <option value="">Choose range</option>
-                            <option value="10M-100M" {{ old('capital_range') === '10M-100M' ? 'selected' : '' }}>10M - 100M</option>
-                            <option value="100M-1B" {{ old('capital_range') === '100M-1B' ? 'selected' : '' }}>100M - 1B</option>
-                            <option value="1B and above" {{ old('capital_range') === '1B and above' ? 'selected' : '' }}>1B and above</option>
-                        </select>
-                        @error('capital_range') <p style="color:#991b1b; font-size:0.85rem; margin: 4px 0 0 0;">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div>
-                        <label class="label" for="category">Category</label>
-                        <select id="category" name="category" class="select" required>
-                            <option value="">Choose category</option>
-                            <option value="Government" {{ old('category') === 'Government' ? 'selected' : '' }}>Government</option>
-                            <option value="Private" {{ old('category') === 'Private' ? 'selected' : '' }}>Private</option>
-                            <option value="Public" {{ old('category') === 'Public' ? 'selected' : '' }}>Public</option>
-                            <option value="Small Entrepreneurs" {{ old('category') === 'Small Entrepreneurs' ? 'selected' : '' }}>Small Entrepreneurs</option>
-                        </select>
-                        @error('category') <p style="color:#991b1b; font-size:0.85rem; margin: 4px 0 0 0;">{{ $message }}</p> @enderror
-                    </div>
-                </div>
-
-                <div class="flex justify-between" style="margin-top: 32px; gap: 16px; flex-wrap: wrap; align-items: center;">
-                    <p class="text-sm" style="margin: 0;">All fields required • No approval needed</p>
-                    <button type="submit" class="button">Submit application</button>
-                </div>
-            </form>
+            <livewire:application-form />
         </div>
     </div>
+    @livewireScripts
 </body>
 </html>

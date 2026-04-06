@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
     @fluxAppearance
 </head>
 <body class="antialiased min-h-screen" style="background: linear-gradient(135deg, #0f172a 0%, #1a2744 50%, #0f172a 100%); font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;">
@@ -15,6 +16,7 @@
             {{ $slot }}
         </div>
     </div>
+    @livewireScripts
     @fluxScripts
 </body>
 </html>
