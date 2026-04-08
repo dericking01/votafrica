@@ -16,7 +16,16 @@
         .card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 24px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); padding: 48px; }
         .grid { display: grid; gap: 20px; }
         .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        @media (max-width: 640px) { .grid-cols-2 { grid-template-columns: 1fr; } .card { padding: 24px; } }
+        @media (max-width: 640px) {
+            .container { padding: 16px; }
+            .grid-cols-2 { grid-template-columns: 1fr; }
+            .card { padding: 20px; border-radius: 18px; }
+            .header { margin-bottom: 28px; }
+            .header h1 { font-size: 1.9rem !important; line-height: 1.2; }
+            .header p { font-size: 0.98rem !important; }
+            .nav-links { justify-content: center; width: 100%; }
+            .nav-links a { width: 100%; text-align: center; }
+        }
         .flex { display: flex; }
         .items-center { align-items: center; }
         .justify-between { justify-content: space-between; }

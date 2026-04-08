@@ -1,5 +1,5 @@
 <x-layouts.app>
-    <div class="min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-blue-50/30 p-4 md:p-8">
+    <div class="min-h-screen bg-linear-to-br from-gray-50 via-gray-50 to-blue-50/30 p-4 md:p-8">
         <div class="max-w-7xl mx-auto space-y-6">
 
             {{-- Header --}}
@@ -13,8 +13,8 @@
                         <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Applications Overview</h1>
                         <p class="text-sm text-gray-500 mt-1">{{ now()->format('l, F j, Y') }} - {{ now()->format('g:i A') }}</p>
                     </div>
-                    <a href="{{ route('home') }}" target="_blank"
-                       class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm hover:shadow-md">
+                          <a href="{{ route('home') }}" target="_blank"
+                              class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 hover:shadow-md md:w-auto">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
@@ -26,7 +26,7 @@
             {{-- Stats Row 1: Total + Categories --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 {{-- Total Card --}}
-                <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-lg p-6">
+                <div class="bg-linear-to-br from-gray-900 to-gray-800 rounded-2xl shadow-lg p-6">
                     <div class="flex items-start justify-between">
                         <div>
                             <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Total Applications</p>
@@ -41,7 +41,7 @@
                     </div>
                     <div class="mt-4">
                         <div class="h-1.5 bg-gray-700 rounded-full overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-blue-400 to-blue-500 rounded-full" style="width: 100%"></div>
+                            <div class="h-full bg-linear-to-r from-blue-400 to-blue-500 rounded-full" style="width: 100%"></div>
                         </div>
                     </div>
                 </div>

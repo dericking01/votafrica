@@ -11,8 +11,8 @@
     @fluxAppearance
 </head>
 <body class="antialiased min-h-screen" style="background: linear-gradient(135deg, #0f172a 0%, #1a2744 50%, #0f172a 100%); font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;">
-    <div class="min-h-screen flex items-center justify-center p-6">
-        <div class="w-full" style="max-width: 400px;">
+    <div class="min-h-screen flex items-center justify-center p-4 sm:p-6">
+        <div class="w-full" style="max-width: 420px;">
             {{ $slot }}
         </div>
     </div>

@@ -73,13 +73,13 @@ new #[Layout('components.layouts.auth')] class extends Component {
 }; ?>
 
 <div>
-    <div class="text-center mb-8">
-        <img src="{{ asset('images/votafricalogo-removebg.png') }}" alt="VotAfrica" class="h-12 mx-auto mb-6">
-        <h1 class="text-2xl font-bold text-white">Admin Portal</h1>
+    <div class="text-center mb-6 sm:mb-8">
+        <img src="{{ asset('images/votafricalogo-removebg.png') }}" alt="VotAfrica" class="mx-auto mb-5 h-10 sm:mb-6 sm:h-12">
+        <h1 class="text-xl font-bold text-white sm:text-2xl">Admin Portal</h1>
         <p class="text-slate-400 text-sm mt-1">Sign in to manage applications</p>
     </div>
 
-    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;backdrop-filter:blur(12px);">
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:22px;backdrop-filter:blur(12px);" class="sm:p-8">
         <x-auth-session-status class="mb-4" :status="session('status')" />
 
         <form wire:submit="login" class="space-y-5">

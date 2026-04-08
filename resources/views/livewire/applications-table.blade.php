@@ -1,19 +1,19 @@
-<div class="space-y-6 rounded-3xl border border-slate-200/80 bg-gradient-to-br from-white via-slate-50 to-stone-50 p-6 shadow-sm">
+<div class="space-y-6 rounded-3xl border border-slate-200/80 bg-gradient-to-br from-white via-slate-50 to-stone-50 p-4 shadow-sm sm:p-6">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <p class="text-sm text-slate-500">Manage submissions</p>
             <h1 class="text-2xl font-bold text-slate-900 mt-0.5">All Applications</h1>
         </div>
 
-        <form wire:submit.prevent class="flex items-center gap-2">
-            <div class="relative">
+        <form wire:submit.prevent class="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap sm:justify-end">
+            <div class="relative w-full sm:w-auto">
                 <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
                 <input
                     wire:model.live.debounce.300ms="search"
                     placeholder="Search applications..."
-                    class="pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 shadow-sm w-64 focus:outline-none focus:border-slate-400"
+                    class="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-4 text-sm text-slate-800 shadow-sm focus:border-slate-400 focus:outline-none sm:w-64"
                 />
             </div>
             <button type="submit" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-700">Search</button>
@@ -33,15 +33,15 @@
         </form>
     </div>
 
-    <div class="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-1.5 w-fit">
+    <div class="flex w-full items-center gap-2 rounded-2xl border border-slate-200 bg-white p-1.5 sm:w-fit">
         <button type="button"
                 wire:click="setTab('active')"
-                class="rounded-xl px-4 py-2 text-sm font-semibold transition-colors {{ $tab === 'active' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100' }}">
+                class="flex-1 rounded-xl px-4 py-2 text-sm font-semibold transition-colors sm:flex-none {{ $tab === 'active' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100' }}">
             Active
         </button>
         <button type="button"
                 wire:click="setTab('archived')"
-                class="rounded-xl px-4 py-2 text-sm font-semibold transition-colors {{ $tab === 'archived' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100' }}">
+                class="flex-1 rounded-xl px-4 py-2 text-sm font-semibold transition-colors sm:flex-none {{ $tab === 'archived' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100' }}">
             Archived
         </button>
     </div>
@@ -98,8 +98,8 @@
         </div>
     @endif
 
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <table class="min-w-full">
+    <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <table class="min-w-[860px] w-full">
             <thead>
                 <tr style="border-bottom:1px solid #f1f5f9;">
                     <th class="px-5 py-4 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest">Organization</th>
@@ -173,7 +173,7 @@
     </div>
 
     @if($applications->hasPages())
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p class="text-sm text-slate-500">Showing {{ $applications->firstItem() }}-{{ $applications->lastItem() }} of {{ $applications->total() }}</p>
             {{ $applications->links(data: ['scrollTo' => false]) }}
         </div>

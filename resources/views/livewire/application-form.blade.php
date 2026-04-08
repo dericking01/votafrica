@@ -25,7 +25,7 @@
     @endif
 
     <form wire:submit="submit" novalidate>
-        <div class="grid grid-cols-2" style="gap:24px;">
+        <div class="grid grid-cols-1 sm:grid-cols-2" style="gap:24px;">
             <div>
                 <label class="label" for="organization_name">Business name</label>
                 <input id="organization_name" wire:model.blur="organization_name" class="input" type="text" placeholder="ACME Trading Ltd" required />
@@ -74,12 +74,15 @@
             </div>
         </div>
 
-        <div class="flex justify-between" style="margin-top: 32px; gap: 16px; flex-wrap: wrap; align-items: center;">
-            <p class="text-sm" style="margin: 0;">All fields required • No approval needed</p>
-            <button type="submit" class="button" wire:loading.attr="disabled" wire:target="submit">
-                <span wire:loading.remove wire:target="submit">Submit application</span>
-                <span wire:loading wire:target="submit">Submitting...</span>
-            </button>
+        <div style="margin-top: 32px;">
+            <p class="text-sm" style="margin: 0; text-align: center;">All fields required</p>
+
+            <div style="margin-top: 16px; display: flex; justify-content: center;">
+                <button type="submit" class="button" style="width:100%;max-width:280px;" wire:loading.attr="disabled" wire:target="submit">
+                    <span wire:loading.remove wire:target="submit">Submit application</span>
+                    <span wire:loading wire:target="submit">Submitting...</span>
+                </button>
+            </div>
         </div>
     </form>
 </div>
