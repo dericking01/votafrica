@@ -27,20 +27,20 @@
     <form wire:submit="submit" novalidate>
         <div class="grid grid-cols-2" style="gap:24px;">
             <div>
-                <label class="label" for="organization_name">Organization name</label>
+                <label class="label" for="organization_name">Business name</label>
                 <input id="organization_name" wire:model.blur="organization_name" class="input" type="text" placeholder="ACME Trading Ltd" required />
                 @error('organization_name') <p style="color:#991b1b; font-size:0.85rem; margin: 4px 0 0 0;">{{ $message }}</p> @enderror
             </div>
 
             <div>
                 <label class="label" for="phone_number">Phone number</label>
-                <input id="phone_number" wire:model.blur="phone_number" class="input" type="text" placeholder="+254 700 000 000" required />
+                <input id="phone_number" wire:model.blur="phone_number" class="input" type="text" placeholder="+255__" required />
                 @error('phone_number') <p style="color:#991b1b; font-size:0.85rem; margin: 4px 0 0 0;">{{ $message }}</p> @enderror
             </div>
 
             <div>
                 <label class="label" for="business_location">Business location</label>
-                <input id="business_location" wire:model.blur="business_location" class="input" type="text" placeholder="Nairobi, Kenya" required />
+                <input id="business_location" wire:model.blur="business_location" class="input" type="text" placeholder="Dodoma, Tanzania" required />
                 @error('business_location') <p style="color:#991b1b; font-size:0.85rem; margin: 4px 0 0 0;">{{ $message }}</p> @enderror
             </div>
 

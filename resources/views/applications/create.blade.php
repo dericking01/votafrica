@@ -43,7 +43,7 @@
             <div class="logo">
                 <img src="{{ asset('images/votafricalogo-removebg.png') }}" alt="VotAfrica" />
             </div>
-            <h1 style="font-size: 2.5rem; margin: 16px 0 8px; font-weight: 700;">Business Application</h1>
+            <h1 style="font-size: 2.5rem; margin: 16px 0 8px; font-weight: 700;">Biashara Forum</h1>
             <p style="margin: 0; font-size: 1.1rem; opacity: 0.9;">Quick & easy registration. No signup required.</p>
             <div class="nav-links">
                 <a href="{{ route('login') }}" wire:navigate>Admin Login</a>
