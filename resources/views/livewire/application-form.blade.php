@@ -1,4 +1,4 @@
-<div>
+<div x-data="{ showPaymentModal: false }" @keydown.escape.window="showPaymentModal = false">
     <div x-data="{ show: @entangle('submitted').live }"
          x-show="show"
          x-transition:enter="transition ease-out duration-500"
@@ -88,6 +88,16 @@
             <p class="text-sm" style="margin: 0; text-align: center;">All fields required except email</p>
             <p class="text-sm" style="margin: 8px 0 0 0; text-align: center; color:#b91c1c; font-weight:700;">For More info dial: 0765-043-474</p>
 
+            <div style="margin-top: 10px; display: flex; justify-content: center;">
+                <button
+                    type="button"
+                    @click="showPaymentModal = true"
+                    class="button"
+                    style="max-width:280px; width:100%; background:#0f766e;">
+                    View payment info
+                </button>
+            </div>
+
             <div style="margin-top: 12px; display: flex; justify-content: center;">
                 <button type="submit" class="button" style="width:100%;max-width:280px;" wire:loading.attr="disabled" wire:target="submit">
                     <span wire:loading.remove wire:target="submit">Submit application</span>
@@ -96,4 +106,35 @@
             </div>
         </div>
     </form>
+
+    <div
+        x-show="showPaymentModal"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        @click.self="showPaymentModal = false"
+        style="position:fixed; inset:0; background:rgba(15,23,42,0.65); z-index:60; display:none; padding:20px;">
+        <div style="max-width:520px; margin:6vh auto 0 auto; background:#ffffff; border-radius:14px; padding:20px; box-shadow:0 22px 60px rgba(15,23,42,0.22);">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+                <h3 style="margin:0; font-size:1.1rem; font-weight:700; color:#0f172a;">Payment Information</h3>
+                <button type="button" @click="showPaymentModal = false" style="border:none; background:transparent; font-size:1.3rem; line-height:1; color:#475569; cursor:pointer;">&times;</button>
+            </div>
+
+            <div style="margin-top:14px; text-align:center;">
+                <img src="{{ asset('images/crdb_logo.avif') }}" alt="CRDB Bank logo" style="height:72px; width:auto; object-fit:contain; margin:0 auto;" />
+            </div>
+
+            <p style="margin:16px 0 0 0; color:#1e293b; font-size:0.98rem; line-height:1.6;">
+                CRDB BANK account #: <strong>0150875721300</strong><br>
+                Acc name: <strong>Voice of Talent (VOT) Africa</strong>
+            </p>
+
+            <div style="margin-top:16px; display:flex; justify-content:flex-end;">
+                <button type="button" @click="showPaymentModal = false" class="button" style="max-width:140px;">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
