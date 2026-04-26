@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Jobs\SendApplicationSubmissionSms;
 use App\Models\Application;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -35,7 +37,13 @@ class ApplicationForm extends Component
     {
         $data = $this->validate();
 
-        Application::create($data);
+        $application = Application::create($data);
+        SendApplicationSubmissionSms::dispatch((string) $data['phone_number']);
+
+        Log::info('Application submitted and SMS job dispatched.', [
+            'application_id' => $application->id,
+            'phone_number' => (string) $data['phone_number'],
+        ]);
 
         $this->reset([
             'organization_name',
