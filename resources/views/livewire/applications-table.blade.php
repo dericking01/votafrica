@@ -48,7 +48,7 @@
 
     @if($showFilters)
         <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
                 <div>
                     <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Status</label>
                     <select wire:model.live="statusFilter" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300">
@@ -89,6 +89,15 @@
                 </div>
 
                 <div>
+                    <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Payment</label>
+                    <select wire:model.live="paymentFilter" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300">
+                        <option value="all">All payments</option>
+                        <option value="PAID">PAID</option>
+                        <option value="UNPAID">UNPAID</option>
+                    </select>
+                </div>
+
+                <div>
                     <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Date To</label>
                     <input type="date" wire:model.live="dateTo" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300" />
                 </div>
@@ -112,6 +121,7 @@
                     <th class="px-5 py-4 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest hidden lg:table-cell">Phone</th>
                     <th class="px-5 py-4 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest hidden lg:table-cell">Capital</th>
                     <th class="px-5 py-4 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest">Category</th>
+                    <th class="px-5 py-4 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest">Payment</th>
                     <th class="px-5 py-4 text-left text-[11px] font-bold text-slate-400 uppercase tracking-widest">Status</th>
                     <th class="px-5 py-4 text-center text-[11px] font-bold text-slate-400 uppercase tracking-widest hidden sm:table-cell">Date</th>
                     @if($this->isArchivedView())
@@ -138,6 +148,11 @@
                                 $categoryLabel = $app->category === 'Small Entrepreneurs' ? 'SME' : $app->category;
                             @endphp
                             <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="{{ $cc[$app->category] ?? 'background:#f1f5f9;color:#475569' }}">{{ $categoryLabel }}</span>
+                        </td>
+                        <td class="px-5 py-4">
+                            <span class="inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-semibold {{ $app->payment_status === 'PAID' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-700' }}">
+                                {{ $app->payment_status ?: 'UNPAID' }}
+                            </span>
                         </td>
                         <td class="px-5 py-4">
                             <span class="inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-semibold {{ $app->trashed() ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800' }}">
@@ -167,7 +182,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="{{ $this->isArchivedView() ? 10 : 9 }}" class="px-5 py-16 text-center">
+                        <td colspan="{{ $this->isArchivedView() ? 11 : 10 }}" class="px-5 py-16 text-center">
                             <p class="text-slate-400 text-sm">No applications found{{ $search ? ' matching &ldquo;'.$search.'&rdquo;' : '' }}.</p>
                         </td>
                     </tr>

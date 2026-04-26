@@ -22,6 +22,8 @@ class ApplicationDetail extends Component
 
     public string $category = '';
 
+    public string $payment_status = 'UNPAID';
+
     public ?string $notice = null;
 
     public string $noticeType = 'success';
@@ -53,6 +55,7 @@ class ApplicationDetail extends Component
             'email' => ['nullable', 'email', 'max:255'],
             'capital_range' => ['required', 'string', Rule::in(['100k - 1M', '1M -10M', '10M-100M', '100M-1B', '1B and above', 'Prefer not to say'])],
             'category' => ['required', 'string', Rule::in(['Government', 'Private', 'Public', 'Small Entrepreneurs', 'NGO'])],
+            'payment_status' => ['required', 'string', Rule::in(['PAID', 'UNPAID'])],
         ]);
 
         $this->application->update($validated);
@@ -100,6 +103,7 @@ class ApplicationDetail extends Component
         $this->email = $this->application->email !== null ? (string) $this->application->email : '';
         $this->capital_range = (string) $this->application->capital_range;
         $this->category = (string) $this->application->category;
+        $this->payment_status = (string) ($this->application->payment_status ?: 'UNPAID');
     }
 
     public function render()

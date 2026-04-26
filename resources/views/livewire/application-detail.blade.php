@@ -16,6 +16,9 @@
                             $cc = ['Government'=>'background:#dbeafe;color:#1d4ed8','Private'=>'background:#ede9fe;color:#6d28d9','Public'=>'background:#dcfce7;color:#15803d','Small Entrepreneurs'=>'background:#fef9c3;color:#854d0e','NGO'=>'background:#fee2e2;color:#9f1239'];
                         @endphp
                         <span class="inline-flex items-center rounded-xl px-3 py-1.5 text-xs font-semibold" style="{{ $cc[$application->category] ?? 'background:#f1f5f9;color:#475569' }}">{{ $application->category }}</span>
+                        <span class="inline-flex items-center rounded-xl px-3 py-1.5 text-xs font-semibold {{ $application->payment_status === 'PAID' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-700' }}">
+                            {{ $application->payment_status ?: 'UNPAID' }}
+                        </span>
                         <span class="inline-flex items-center rounded-xl px-3 py-1.5 text-xs font-semibold {{ $application->trashed() ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800' }}">
                             {{ $application->trashed() ? 'Archived' : 'Active' }}
                         </span>
@@ -161,6 +164,20 @@
                         @error('category') <p class="mt-1 text-xs font-medium text-rose-600">{{ $message }}</p> @enderror
                     @else
                         <p class="text-sm font-semibold text-slate-900">{{ $application->category }}</p>
+                    @endif
+                </div>
+                <div class="border-b border-slate-100 px-4 py-4 sm:px-6 sm:py-5">
+                    <p class="mb-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-400">Payment Status</p>
+                    @if($isEditing)
+                        <select wire:model.blur="payment_status" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300" style="min-height:44px; line-height:1.4; padding-top:8px; padding-bottom:8px;">
+                            <option value="UNPAID">UNPAID</option>
+                            <option value="PAID">PAID</option>
+                        </select>
+                        @error('payment_status') <p class="mt-1 text-xs font-medium text-rose-600">{{ $message }}</p> @enderror
+                    @else
+                        <span class="inline-flex items-center rounded-xl px-3 py-1.5 text-xs font-semibold {{ $application->payment_status === 'PAID' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-700' }}">
+                            {{ $application->payment_status ?: 'UNPAID' }}
+                        </span>
                     @endif
                 </div>
                 <div class="px-4 py-4 sm:col-span-2 sm:px-6 sm:py-5">

@@ -28,6 +28,9 @@ class ApplicationsTable extends Component
     #[Url(as: 'capital', history: true)]
     public string $capitalFilter = 'all';
 
+    #[Url(as: 'payment', history: true)]
+    public string $paymentFilter = 'all';
+
     #[Url(as: 'from', history: true)]
     public string $dateFrom = '';
 
@@ -61,6 +64,15 @@ class ApplicationsTable extends Component
     {
         if (! in_array($this->capitalFilter, ['all', '100k - 1M', '1M -10M', '10M-100M', '100M-1B', '1B and above', 'Prefer not to say'], true)) {
             $this->capitalFilter = 'all';
+        }
+
+        $this->resetPage();
+    }
+
+    public function updatedPaymentFilter(): void
+    {
+        if (! in_array($this->paymentFilter, ['all', 'PAID', 'UNPAID'], true)) {
+            $this->paymentFilter = 'all';
         }
 
         $this->resetPage();
@@ -107,6 +119,7 @@ class ApplicationsTable extends Component
         $this->statusFilter = 'all';
         $this->categoryFilter = 'all';
         $this->capitalFilter = 'all';
+        $this->paymentFilter = 'all';
         $this->dateFrom = '';
         $this->dateTo = '';
         $this->resetPage();
@@ -117,6 +130,7 @@ class ApplicationsTable extends Component
         return $this->statusFilter !== 'all'
             || $this->categoryFilter !== 'all'
             || $this->capitalFilter !== 'all'
+            || $this->paymentFilter !== 'all'
             || $this->dateFrom !== ''
             || $this->dateTo !== '';
     }
@@ -163,11 +177,13 @@ class ApplicationsTable extends Component
                         ->orWhere('business_activity', 'like', "%{$this->search}%")
                         ->orWhere('phone_number', 'like', "%{$this->search}%")
                         ->orWhere('email', 'like', "%{$this->search}%")
-                        ->orWhere('category', 'like', "%{$this->search}%");
+                        ->orWhere('category', 'like', "%{$this->search}%")
+                        ->orWhere('payment_status', 'like', "%{$this->search}%");
                 });
             })
             ->when($this->categoryFilter !== 'all', fn ($query) => $query->where('category', $this->categoryFilter))
             ->when($this->capitalFilter !== 'all', fn ($query) => $query->where('capital_range', $this->capitalFilter))
+            ->when($this->paymentFilter !== 'all', fn ($query) => $query->where('payment_status', $this->paymentFilter))
             ->when($this->dateFrom !== '', fn ($query) => $query->whereDate('created_at', '>=', $this->dateFrom))
             ->when($this->dateTo !== '', fn ($query) => $query->whereDate('created_at', '<=', $this->dateTo))
             ->orderByDesc('created_at')

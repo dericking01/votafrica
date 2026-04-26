@@ -18,6 +18,7 @@ class Application extends Model
         'email',
         'capital_range',
         'category',
+        'payment_status',
     ];
 
     protected $casts = [
