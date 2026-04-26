@@ -180,12 +180,13 @@ class ApplicationsTable extends Component
         $fileName = 'applications-export-'.now()->format('Ymd_His').'.xls';
 
         return response()->streamDownload(function () use ($rows) {
-            $output = fopen('php://output', 'wb');
+            echo "\xEF\xBB\xBF";
 
-            // Add UTF-8 BOM so Excel reads special characters correctly.
-            fwrite($output, "\xEF\xBB\xBF");
+            echo '<html><head><meta charset="UTF-8"></head><body>';
+            echo '<table border="1" cellspacing="0" cellpadding="6">';
+            echo '<thead><tr>';
 
-            fputcsv($output, [
+            $headers = [
                 'Organization',
                 'Location',
                 'Activity',
@@ -196,27 +197,38 @@ class ApplicationsTable extends Component
                 'Payment Status',
                 'Record Status',
                 'Submitted At',
-            ]);
+            ];
 
-            foreach ($rows as $row) {
-                fputcsv($output, [
-                    (string) $row->organization_name,
-                    (string) $row->business_location,
-                    (string) $row->business_activity,
-                    (string) $row->phone_number,
-                    (string) ($row->email ?? ''),
-                    (string) $row->capital_range,
-                    (string) $row->category,
-                    (string) ($row->payment_status ?: 'UNPAID'),
-                    $row->deleted_at ? 'Archived' : 'Active',
-                    optional($row->created_at)->format('Y-m-d H:i:s'),
-                ]);
+            foreach ($headers as $header) {
+                echo '<th style="background-color:#ffeb3b;font-weight:700;">'.$this->escapeForExcelHtml($header).'</th>';
             }
 
-            fclose($output);
+            echo '</tr></thead><tbody>';
+
+            foreach ($rows as $row) {
+                echo '<tr>';
+                echo '<td>'.$this->escapeForExcelHtml((string) $row->organization_name).'</td>';
+                echo '<td>'.$this->escapeForExcelHtml((string) $row->business_location).'</td>';
+                echo '<td>'.$this->escapeForExcelHtml((string) $row->business_activity).'</td>';
+                echo '<td>'.$this->escapeForExcelHtml((string) $row->phone_number).'</td>';
+                echo '<td>'.$this->escapeForExcelHtml((string) ($row->email ?? '')).'</td>';
+                echo '<td>'.$this->escapeForExcelHtml((string) $row->capital_range).'</td>';
+                echo '<td>'.$this->escapeForExcelHtml((string) $row->category).'</td>';
+                echo '<td>'.$this->escapeForExcelHtml((string) ($row->payment_status ?: 'UNPAID')).'</td>';
+                echo '<td>'.$this->escapeForExcelHtml($row->deleted_at ? 'Archived' : 'Active').'</td>';
+                echo '<td>'.$this->escapeForExcelHtml((string) optional($row->created_at)->format('Y-m-d H:i:s')).'</td>';
+                echo '</tr>';
+            }
+
+            echo '</tbody></table></body></html>';
         }, $fileName, [
             'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
         ]);
+    }
+
+    protected function escapeForExcelHtml(?string $value): string
+    {
+        return htmlspecialchars((string) ($value ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 
     protected function filteredQuery(): Builder
