@@ -40,10 +40,12 @@ class ApplicationForm extends Component
         $application = Application::create($data);
         SendApplicationSubmissionSms::dispatch((string) $data['phone_number']);
 
-        Log::info('Application submitted and SMS job dispatched.', [
-            'application_id' => $application->id,
-            'phone_number' => (string) $data['phone_number'],
-        ]);
+        Log::info(
+            "Application submitted and SMS job dispatched.\n".$this->toPrettyJson([
+                'application_id' => $application->id,
+                'phone_number' => (string) $data['phone_number'],
+            ])
+        );
 
         $this->reset([
             'organization_name',
@@ -67,5 +69,11 @@ class ApplicationForm extends Component
     public function render()
     {
         return view('livewire.application-form');
+    }
+
+    private function toPrettyJson(array $context): string
+    {
+        return json_encode($context, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+            ?: '{}';
     }
 }

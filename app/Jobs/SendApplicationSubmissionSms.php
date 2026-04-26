@@ -23,9 +23,11 @@ class SendApplicationSubmissionSms implements ShouldQueue
         $to = $this->formatMsisdn($this->phoneNumber);
 
         if ($to === null) {
-            Log::warning('SMS not sent because phone number could not be normalized to MSISDN.', [
-                'phone_number' => $this->phoneNumber,
-            ]);
+            Log::warning(
+                "SMS not sent because phone number could not be normalized to MSISDN.\n".$this->toPrettyJson([
+                    'phone_number' => $this->phoneNumber,
+                ])
+            );
 
             return;
         }
@@ -37,7 +39,12 @@ class SendApplicationSubmissionSms implements ShouldQueue
         $caBundle = trim((string) config('services.sms.ca_bundle', ''));
 
         if ($apiKey === '') {
-            Log::warning('SMS not sent because SMS_API_KEY is missing.');
+            Log::warning(
+                "SMS not sent because SMS_API_KEY is missing.\n".$this->toPrettyJson([
+                    'base_url' => $baseUrl,
+                    'endpoint' => $endpoint,
+                ])
+            );
 
             return;
         }
@@ -52,16 +59,18 @@ class SendApplicationSubmissionSms implements ShouldQueue
             'reference' => $reference,
         ];
 
-        Log::info('Sending application submission SMS.', [
-            'to' => $to,
-            'base_url' => $baseUrl,
-            'endpoint' => $endpoint,
-            'reference' => $reference,
-            'ssl_verify' => $verifySsl,
-            'ca_bundle' => $caBundle !== '' ? $caBundle : null,
-            'authorization' => 'Bearer '.$this->maskToken($apiKey),
-            'payload' => $payload,
-        ]);
+        Log::info(
+            "Sending application submission SMS.\n".$this->toPrettyJson([
+                'to' => $to,
+                'base_url' => $baseUrl,
+                'endpoint' => $endpoint,
+                'reference' => $reference,
+                'ssl_verify' => $verifySsl,
+                'ca_bundle' => $caBundle !== '' ? $caBundle : null,
+                'authorization' => 'Bearer '.$this->maskToken($apiKey),
+                'payload' => $payload,
+            ])
+        );
 
         try {
             $request = Http::baseUrl($baseUrl)
@@ -77,30 +86,36 @@ class SendApplicationSubmissionSms implements ShouldQueue
 
             $response = $request->post($endpoint, $payload);
 
-            Log::info('SMS provider responded.', [
-                'to' => $to,
-                'reference' => $reference,
-                'status' => $response->status(),
-                'response' => $this->truncateForLog($response->body()),
-            ]);
+            Log::info(
+                "SMS provider responded.\n".$this->toPrettyJson([
+                    'to' => $to,
+                    'reference' => $reference,
+                    'status' => $response->status(),
+                    'response' => $this->truncateForLog($response->body()),
+                ])
+            );
 
             $response->throw();
         } catch (RequestException $e) {
-            Log::error('SMS provider request failed.', [
-                'to' => $to,
-                'reference' => $reference,
-                'status' => $e->response?->status(),
-                'response' => $this->truncateForLog($e->response?->body()),
-                'error' => $e->getMessage(),
-            ]);
+            Log::error(
+                "SMS provider request failed.\n".$this->toPrettyJson([
+                    'to' => $to,
+                    'reference' => $reference,
+                    'status' => $e->response?->status(),
+                    'response' => $this->truncateForLog($e->response?->body()),
+                    'error' => $e->getMessage(),
+                ])
+            );
 
             throw $e;
         } catch (Throwable $e) {
-            Log::error('SMS job failed before provider response.', [
-                'to' => $to,
-                'reference' => $reference,
-                'error' => $e->getMessage(),
-            ]);
+            Log::error(
+                "SMS job failed before provider response.\n".$this->toPrettyJson([
+                    'to' => $to,
+                    'reference' => $reference,
+                    'error' => $e->getMessage(),
+                ])
+            );
 
             throw $e;
         }
@@ -139,5 +154,11 @@ class SendApplicationSubmissionSms implements ShouldQueue
         }
 
         return substr($token, 0, 4).str_repeat('*', $length - 8).substr($token, -4);
+    }
+
+    private function toPrettyJson(array $context): string
+    {
+        return json_encode($context, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+            ?: '{}';
     }
 }
