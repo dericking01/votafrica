@@ -30,6 +30,14 @@
                 </svg>
                 Filter
             </button>
+            <button type="button"
+                    wire:click="exportFilteredApplications"
+                    class="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-700 transition-colors hover:bg-emerald-100">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V3m0 13.5-4.5-4.5M12 16.5l4.5-4.5M3.75 20.25h16.5" />
+                </svg>
+                Export
+            </button>
         </form>
     </div>
 
