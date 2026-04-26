@@ -66,6 +66,7 @@
                         <option value="Private">Private</option>
                         <option value="Public">Public</option>
                         <option value="Small Entrepreneurs">Small Entrepreneurs</option>
+                        <option value="NGO">NGO</option>
                     </select>
                 </div>
 
@@ -73,9 +74,12 @@
                     <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">Capital</label>
                     <select wire:model.live="capitalFilter" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300">
                         <option value="all">All ranges</option>
+                        <option value="100k - 1M">100k - 1M</option>
+                        <option value="1M -10M">1M -10M</option>
                         <option value="10M-100M">10M - 100M</option>
                         <option value="100M-1B">100M - 1B</option>
                         <option value="1B and above">1B and above</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
                     </select>
                 </div>
 
@@ -130,7 +134,7 @@
                         </td>
                         <td class="px-5 py-4">
                             @php
-                                $cc = ['Government' => 'background:#dbeafe;color:#1d4ed8', 'Private' => 'background:#ede9fe;color:#6d28d9', 'Public' => 'background:#dcfce7;color:#15803d', 'Small Entrepreneurs' => 'background:#fef9c3;color:#854d0e'];
+                                $cc = ['Government' => 'background:#dbeafe;color:#1d4ed8', 'Private' => 'background:#ede9fe;color:#6d28d9', 'Public' => 'background:#dcfce7;color:#15803d', 'Small Entrepreneurs' => 'background:#fef9c3;color:#854d0e', 'NGO' => 'background:#fee2e2;color:#9f1239'];
                                 $categoryLabel = $app->category === 'Small Entrepreneurs' ? 'SME' : $app->category;
                             @endphp
                             <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="{{ $cc[$app->category] ?? 'background:#f1f5f9;color:#475569' }}">{{ $categoryLabel }}</span>

@@ -15,6 +15,7 @@ class Application extends Model
         'business_location',
         'business_activity',
         'phone_number',
+        'email',
         'capital_range',
         'category',
     ];

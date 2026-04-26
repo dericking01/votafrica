@@ -50,7 +50,7 @@ class ApplicationsTable extends Component
 
     public function updatedCategoryFilter(): void
     {
-        if (! in_array($this->categoryFilter, ['all', 'Government', 'Private', 'Public', 'Small Entrepreneurs'], true)) {
+        if (! in_array($this->categoryFilter, ['all', 'Government', 'Private', 'Public', 'Small Entrepreneurs', 'NGO'], true)) {
             $this->categoryFilter = 'all';
         }
 
@@ -59,7 +59,7 @@ class ApplicationsTable extends Component
 
     public function updatedCapitalFilter(): void
     {
-        if (! in_array($this->capitalFilter, ['all', '10M-100M', '100M-1B', '1B and above'], true)) {
+        if (! in_array($this->capitalFilter, ['all', '100k - 1M', '1M -10M', '10M-100M', '100M-1B', '1B and above', 'Prefer not to say'], true)) {
             $this->capitalFilter = 'all';
         }
 
@@ -162,6 +162,7 @@ class ApplicationsTable extends Component
                         ->orWhere('business_location', 'like', "%{$this->search}%")
                         ->orWhere('business_activity', 'like', "%{$this->search}%")
                         ->orWhere('phone_number', 'like', "%{$this->search}%")
+                        ->orWhere('email', 'like', "%{$this->search}%")
                         ->orWhere('category', 'like', "%{$this->search}%");
                 });
             })

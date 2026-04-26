@@ -13,7 +13,7 @@
                     <h1 class="mt-0.5 break-words text-xl font-bold text-slate-900 sm:text-2xl">{{ $application->organization_name }}</h1>
                     <div class="mt-2 flex flex-wrap items-center gap-2">
                         @php
-                            $cc = ['Government'=>'background:#dbeafe;color:#1d4ed8','Private'=>'background:#ede9fe;color:#6d28d9','Public'=>'background:#dcfce7;color:#15803d','Small Entrepreneurs'=>'background:#fef9c3;color:#854d0e'];
+                            $cc = ['Government'=>'background:#dbeafe;color:#1d4ed8','Private'=>'background:#ede9fe;color:#6d28d9','Public'=>'background:#dcfce7;color:#15803d','Small Entrepreneurs'=>'background:#fef9c3;color:#854d0e','NGO'=>'background:#fee2e2;color:#9f1239'];
                         @endphp
                         <span class="inline-flex items-center rounded-xl px-3 py-1.5 text-xs font-semibold" style="{{ $cc[$application->category] ?? 'background:#f1f5f9;color:#475569' }}">{{ $application->category }}</span>
                         <span class="inline-flex items-center rounded-xl px-3 py-1.5 text-xs font-semibold {{ $application->trashed() ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800' }}">
@@ -122,13 +122,25 @@
                     @endif
                 </div>
                 <div class="border-b border-slate-100 px-4 py-4 sm:px-6 sm:py-5">
+                    <p class="mb-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-400">Email</p>
+                    @if($isEditing)
+                        <input type="email" wire:model.blur="email" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300" placeholder="name@example.com" />
+                        @error('email') <p class="mt-1 text-xs font-medium text-rose-600">{{ $message }}</p> @enderror
+                    @else
+                        <p class="text-sm font-semibold text-slate-900">{{ $application->email ?: 'Not provided' }}</p>
+                    @endif
+                </div>
+                <div class="border-b border-slate-100 px-4 py-4 sm:px-6 sm:py-5">
                     <p class="mb-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-400">Capital Range</p>
                     @if($isEditing)
-                        <select wire:model.blur="capital_range" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300">
+                        <select wire:model.blur="capital_range" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300" style="min-height:44px; line-height:1.4; padding-top:8px; padding-bottom:8px;">
                             <option value="">Choose range</option>
+                            <option value="100k - 1M">100k - 1M</option>
+                            <option value="1M -10M">1M -10M</option>
                             <option value="10M-100M">10M - 100M</option>
                             <option value="100M-1B">100M - 1B</option>
                             <option value="1B and above">1B and above</option>
+                            <option value="Prefer not to say">Prefer not to say</option>
                         </select>
                         @error('capital_range') <p class="mt-1 text-xs font-medium text-rose-600">{{ $message }}</p> @enderror
                     @else
@@ -138,12 +150,13 @@
                 <div class="border-b border-slate-100 px-4 py-4 sm:border-l sm:px-6 sm:py-5">
                     <p class="mb-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-400">Category</p>
                     @if($isEditing)
-                        <select wire:model.blur="category" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300">
+                        <select wire:model.blur="category" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300" style="min-height:44px; line-height:1.4; padding-top:8px; padding-bottom:8px;">
                             <option value="">Choose category</option>
                             <option value="Government">Government</option>
                             <option value="Private">Private</option>
                             <option value="Public">Public</option>
                             <option value="Small Entrepreneurs">Small Entrepreneurs</option>
+                            <option value="NGO">NGO</option>
                         </select>
                         @error('category') <p class="mt-1 text-xs font-medium text-rose-600">{{ $message }}</p> @enderror
                     @else

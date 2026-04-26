@@ -16,6 +16,8 @@ class ApplicationDetail extends Component
 
     public string $phone_number = '';
 
+    public ?string $email = '';
+
     public string $capital_range = '';
 
     public string $category = '';
@@ -48,8 +50,9 @@ class ApplicationDetail extends Component
         $validated = $this->validate([
             'business_location' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'string', 'max:50'],
-            'capital_range' => ['required', 'string', Rule::in(['10M-100M', '100M-1B', '1B and above'])],
-            'category' => ['required', 'string', Rule::in(['Government', 'Private', 'Public', 'Small Entrepreneurs'])],
+            'email' => ['nullable', 'email', 'max:255'],
+            'capital_range' => ['required', 'string', Rule::in(['100k - 1M', '1M -10M', '10M-100M', '100M-1B', '1B and above', 'Prefer not to say'])],
+            'category' => ['required', 'string', Rule::in(['Government', 'Private', 'Public', 'Small Entrepreneurs', 'NGO'])],
         ]);
 
         $this->application->update($validated);
@@ -94,6 +97,7 @@ class ApplicationDetail extends Component
     {
         $this->business_location = (string) $this->application->business_location;
         $this->phone_number = (string) $this->application->phone_number;
+        $this->email = $this->application->email !== null ? (string) $this->application->email : '';
         $this->capital_range = (string) $this->application->capital_range;
         $this->category = (string) $this->application->category;
     }

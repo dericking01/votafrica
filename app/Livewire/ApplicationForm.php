@@ -20,10 +20,13 @@ class ApplicationForm extends Component
     #[Validate('required|string|max:50')]
     public string $phone_number = '';
 
-    #[Validate('required|string|in:10M-100M,100M-1B,1B and above')]
+    #[Validate('nullable|email|max:255')]
+    public ?string $email = '';
+
+    #[Validate('required|string|in:100k - 1M,1M -10M,10M-100M,100M-1B,1B and above,Prefer not to say')]
     public string $capital_range = '';
 
-    #[Validate('required|string|in:Government,Private,Public,Small Entrepreneurs')]
+    #[Validate('required|string|in:Government,Private,Public,Small Entrepreneurs,NGO')]
     public string $category = '';
 
     public bool $submitted = false;
@@ -39,6 +42,7 @@ class ApplicationForm extends Component
             'business_location',
             'business_activity',
             'phone_number',
+            'email',
             'capital_range',
             'category',
         ]);
